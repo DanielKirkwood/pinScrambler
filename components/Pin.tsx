@@ -4,6 +4,8 @@ import PinInput from "./PinInput"
 
 type Props = {
   order: number[]
+  randomise: boolean
+  shuffleFn?: (order: number[]) => number[]
 }
 
 const renderStepper = (numFilled: number) => {
@@ -33,9 +35,16 @@ const renderStepper = (numFilled: number) => {
   )
 }
 
-export default function Pin({ order }: Props) {
+export default function Pin({ order, randomise, shuffleFn }: Props) {
   const [pin, setPin] = useState<string>("")
   const updatePin = (n: number) => setPin(pin + n.toString())
+
+  const onPressHandler = () => {
+    setPin("")
+    if (randomise && shuffleFn) {
+      shuffleFn(order)
+    }
+  }
 
   return (
     <View>
@@ -43,7 +52,11 @@ export default function Pin({ order }: Props) {
         <View>
           <Text style={{ fontSize: 34, color: "white" }}>Unlocked</Text>
           <View style={{ backgroundColor: "blue", marginVertical: 20 }}>
-            <Button title="Reset" color="white" onPress={() => setPin("")} />
+            <Button
+              title="Reset"
+              color="white"
+              onPress={() => onPressHandler()}
+            />
           </View>
         </View>
       )}

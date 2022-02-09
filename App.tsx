@@ -1,35 +1,38 @@
 import { StyleSheet, View } from "react-native"
 import Pin from "./components/Pin"
 
-// shuffles array using Fisher-Yates (aka Knuth) shuffle
-function shuffle(array: number[]) {
-  let currentIndex = array.length,
-    randomIndex
+export default function App() {
+  // shuffles array using Fisher-Yates (aka Knuth) shuffle
+  function shuffle(array: number[]) {
+    let currentIndex = array.length,
+      randomIndex
 
-  // While there remain elements to shuffle...
-  while (currentIndex != 0) {
-    // Pick a remaining element...
-    randomIndex = Math.floor(Math.random() * currentIndex)
-    currentIndex--
+    // While there remain elements to shuffle...
+    while (currentIndex != 0) {
+      // Pick a remaining element...
+      randomIndex = Math.floor(Math.random() * currentIndex)
+      currentIndex--
 
-    // And swap it with the current element.
-    ;[array[currentIndex], array[randomIndex]] = [
-      array[randomIndex],
-      array[currentIndex],
-    ]
+      // And swap it with the current element.
+      ;[array[currentIndex], array[randomIndex]] = [
+        array[randomIndex],
+        array[currentIndex],
+      ]
+    }
+
+    return array
   }
 
-  return array
-}
+  let order: number[] = [1, 4, 7, 2, 5, 8, 3, 6, 9, 0]
+  const RANDOMISE = true
 
-export default function App() {
-  let order: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0]
-
-  order = shuffle(order)
+  if (RANDOMISE) {
+    order = shuffle(order)
+  }
 
   return (
     <View style={styles.container}>
-      <Pin order={order} />
+      <Pin order={order} shuffleFn={shuffle} randomise={RANDOMISE} />
     </View>
   )
 }
