@@ -20,8 +20,8 @@ export default function PinInput({ number, updatePin }: Props) {
 const styles = StyleSheet.create({
   circleButton: {
     margin: 10,
-    height: 100,
-    width: 100,
+    height: 90,
+    width: 90,
     alignItems: "center",
     justifyContent: "center",
     borderRadius: 200,
