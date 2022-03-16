@@ -1,3 +1,4 @@
+import "dotenv/config"
 import { StyleSheet, View } from "react-native"
 import Pin from "./components/Pin"
 
@@ -24,7 +25,10 @@ export default function App() {
   }
 
   let order: number[] = [1, 4, 7, 2, 5, 8, 3, 6, 9, 0]
-  const RANDOMISE = true
+
+  let RANDOMISE: boolean = process.env.RANDOMISE == "true" ? true : false
+
+  console.log(RANDOMISE)
 
   if (RANDOMISE) {
     order = shuffle(order)
