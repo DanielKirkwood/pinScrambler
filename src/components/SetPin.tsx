@@ -2,55 +2,49 @@ import React, { useState } from "react"
 import { Button, StyleSheet, Text, View } from "react-native"
 import PinInput from "./PinInput"
 
-type Props = {
-  order: number[]
-  randomise: boolean
-  shuffleFn?: (order: number[]) => number[]
-}
+type Props = {}
 
-const renderStepper = (numFilled: number) => {
-  return (
-    <View>
-      <View
-        style={{
-          flexDirection: "row",
-          margin: 0,
-          padding: 0,
-        }}
-      >
-        <View
-          style={[styles.circleLine, numFilled >= 1 && styles.circleFill]}
-        />
-        <View
-          style={[styles.circleLine, numFilled >= 2 && styles.circleFill]}
-        />
-        <View
-          style={[styles.circleLine, numFilled >= 3 && styles.circleFill]}
-        />
-        <View
-          style={[styles.circleLine, numFilled >= 4 && styles.circleFill]}
-        />
-      </View>
-    </View>
-  )
-}
-
-export default function Pin({ order, randomise, shuffleFn }: Props) {
+const SetPin = (props: Props) => {
   const [pin, setPin] = useState<string>("")
   const updatePin = (n: number) => setPin(pin + n.toString())
+  const order: number[] = [1, 4, 7, 2, 5, 8, 3, 6, 9, 0]
 
   const onPressHandler = () => {
     setPin("")
-    if (randomise && shuffleFn) {
-      shuffleFn(order)
-    }
+  }
+
+  const renderStepper = (numFilled: number) => {
+    return (
+      <View>
+        <View
+          style={{
+            flexDirection: "row",
+            margin: 0,
+            padding: 0,
+          }}
+        >
+          <View
+            style={[styles.circleLine, numFilled >= 1 && styles.circleFill]}
+          />
+          <View
+            style={[styles.circleLine, numFilled >= 2 && styles.circleFill]}
+          />
+          <View
+            style={[styles.circleLine, numFilled >= 3 && styles.circleFill]}
+          />
+          <View
+            style={[styles.circleLine, numFilled >= 4 && styles.circleFill]}
+          />
+        </View>
+      </View>
+    )
   }
 
   return (
     <View>
       {pin.length === 4 && (
         <View>
-          <Text style={{ fontSize: 34, color: "white" }}>Unlocked</Text>
+          <Text style={{ fontSize: 34, color: "white" }}>PIN Set</Text>
           <View style={{ backgroundColor: "blue", marginVertical: 20 }}>
             <Button
               title="Reset"
@@ -84,7 +78,7 @@ export default function Pin({ order, randomise, shuffleFn }: Props) {
                   color: "white",
                 }}
               >
-                Enter PIN:
+                Set PIN:
               </Text>
               {renderStepper(pin.length)}
             </View>
@@ -155,3 +149,5 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
   },
 })
+
+export default SetPin

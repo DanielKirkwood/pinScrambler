@@ -1,51 +1,37 @@
-import "dotenv/config"
-import { StyleSheet, View } from "react-native"
-import Pin from "./components/Pin"
+import { NavigationContainer } from "@react-navigation/native"
+import { createNativeStackNavigator } from "@react-navigation/native-stack"
+import React from "react"
+import { Provider } from "react-redux"
+import PinScreen from "./src/features/pin/PinScreen"
+import UnlockedScreen from "./src/features/pin/UnlockedScreen"
+import { store } from "./src/store/store"
 
-export default function App() {
-  // shuffles array using Fisher-Yates (aka Knuth) shuffle
-  function shuffle(array: number[]) {
-    let currentIndex = array.length,
-      randomIndex
+const Stack = createNativeStackNavigator()
 
-    // While there remain elements to shuffle...
-    while (currentIndex != 0) {
-      // Pick a remaining element...
-      randomIndex = Math.floor(Math.random() * currentIndex)
-      currentIndex--
-
-      // And swap it with the current element.
-      ;[array[currentIndex], array[randomIndex]] = [
-        array[randomIndex],
-        array[currentIndex],
-      ]
-    }
-
-    return array
-  }
-
-  let order: number[] = [1, 4, 7, 2, 5, 8, 3, 6, 9, 0]
-
-  let RANDOMISE: boolean = process.env.RANDOMISE == "true" ? true : false
-
-  console.log(RANDOMISE)
-
-  if (RANDOMISE) {
-    order = shuffle(order)
-  }
-
+function App() {
   return (
-    <View style={styles.container}>
-      <Pin order={order} shuffleFn={shuffle} randomise={RANDOMISE} />
-    </View>
+    <Provider store={store}>
+      <NavigationContainer>
+        <Stack.Navigator>
+          <Stack.Screen
+            name="Locked"
+            component={PinScreen}
+            options={{
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen name="Unlocked" component={UnlockedScreen} />
+          <Stack.Screen
+            name="Set Pin"
+            component={PinScreen}
+            options={{
+              headerShown: false,
+            }}
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </Provider>
   )
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "rgba(99,102,106, 0.6)",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-})
+export default App
