@@ -2,13 +2,12 @@ import React, { useEffect, useState } from "react"
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native"
 import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "../../store/store"
-import shuffle from "../../util/shufflePins"
 import { setPin, setStatus, unlockPin } from "./pinSlice"
 
 const PinScreen = ({ navigation }) => {
   const status = useSelector((state: RootState) => state.pin.status)
-
-  const pin = useSelector((state: RootState) => state.pin.pin)
+  const layout = useSelector((state: RootState) => state.pin.layout)
+  const order = useSelector((state: RootState) => state.pin.order)
 
   const dispatch = useDispatch()
 
@@ -32,15 +31,6 @@ const PinScreen = ({ navigation }) => {
 
     return
   }, [userPin])
-
-  let order: string[] = ["1", "4", "7", "2", "5", "8", "3", "6", "9", "0"]
-
-  // let RANDOMISE: boolean = process.env.RANDOMISE == "true" ? true : false
-  let RANDOMISE: boolean = false
-
-  if (RANDOMISE) {
-    order = shuffle(order)
-  }
 
   const renderStepper = (numFilled: number) => {
     return (

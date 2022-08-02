@@ -12,22 +12,14 @@ function App() {
   return (
     <Provider store={store}>
       <NavigationContainer>
-        <Stack.Navigator>
-          <Stack.Screen
-            name="Locked"
-            component={PinScreen}
-            options={{
-              headerShown: false,
-            }}
-          />
+        <Stack.Navigator
+          screenOptions={{
+            headerShown: false,
+          }}
+        >
+          <Stack.Screen name="Locked" component={PinScreen} />
           <Stack.Screen name="Unlocked" component={UnlockedScreen} />
-          <Stack.Screen
-            name="Set Pin"
-            component={PinScreen}
-            options={{
-              headerShown: false,
-            }}
-          />
+          <Stack.Screen name="Set Pin" component={PinScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>
