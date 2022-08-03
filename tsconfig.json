@@ -14,12 +14,6 @@
     "resolveJsonModule": true,
     "strict": true,
     "baseUrl": ".",
-    "paths": {
-      "@/pin/*": ["src/features/pin/*"],
-      "@/redux/*": ["src/redux/*"],
-      "@/util/*": ["src/util/*"],
-      "@/src/*": ["src/*"]
-    }
   },
   "exclude": ["node_modules"]
 }

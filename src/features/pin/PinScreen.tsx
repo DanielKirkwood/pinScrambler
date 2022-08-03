@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react"
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native"
 import { useDispatch, useSelector } from "react-redux"
 import type { RootStackParamList } from "../../App"
-import { RootState } from "../../store/store"
+import { RootState } from "../../redux/store"
 import { setPin, setStatus, unlockPin } from "./pinSlice"
 
 type Props = NativeStackScreenProps<RootStackParamList, "Locked">

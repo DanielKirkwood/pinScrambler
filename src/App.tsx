@@ -4,7 +4,7 @@ import React from "react"
 import { Provider } from "react-redux"
 import PinScreen from "./features/pin/PinScreen"
 import UnlockedScreen from "./features/pin/UnlockedScreen"
-import { store } from "./store/store"
+import { store } from "./redux/store"
 
 export type RootStackParamList = {
   Locked: undefined
