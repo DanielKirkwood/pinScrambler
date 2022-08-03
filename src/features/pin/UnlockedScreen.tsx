@@ -1,10 +1,14 @@
+import type { NativeStackScreenProps } from "@react-navigation/native-stack"
 import React from "react"
 import { Button, StyleSheet, Text, View } from "react-native"
 import { useDispatch, useSelector } from "react-redux"
+import { RootStackParamList } from "../../../App"
 import { RootState } from "../../store/store"
 import { changeLayout, clearPin, resetOrder, shuffleOrder } from "./pinSlice"
 
-const UnlockedScreen = ({ navigation }) => {
+type Props = NativeStackScreenProps<RootStackParamList, "Unlocked">
+
+const UnlockedScreen = ({ navigation }: Props) => {
   const dispatch = useDispatch()
   const layout = useSelector((state: RootState) => state.pin.layout)
 

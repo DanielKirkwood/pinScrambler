@@ -1,12 +1,15 @@
+import type { NativeStackScreenProps } from "@react-navigation/native-stack"
 import React, { useEffect, useState } from "react"
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native"
 import { useDispatch, useSelector } from "react-redux"
+import type { RootStackParamList } from "../../../App"
 import { RootState } from "../../store/store"
 import { setPin, setStatus, unlockPin } from "./pinSlice"
 
-const PinScreen = ({ navigation }) => {
+type Props = NativeStackScreenProps<RootStackParamList, "Locked">
+
+const PinScreen = ({ navigation }: Props) => {
   const status = useSelector((state: RootState) => state.pin.status)
-  const layout = useSelector((state: RootState) => state.pin.layout)
   const order = useSelector((state: RootState) => state.pin.order)
 
   const dispatch = useDispatch()

@@ -6,7 +6,12 @@ import PinScreen from "./src/features/pin/PinScreen"
 import UnlockedScreen from "./src/features/pin/UnlockedScreen"
 import { store } from "./src/store/store"
 
-const Stack = createNativeStackNavigator()
+export type RootStackParamList = {
+  Locked: undefined
+  Unlocked: undefined
+}
+
+const Stack = createNativeStackNavigator<RootStackParamList>()
 
 function App() {
   return (
@@ -19,7 +24,6 @@ function App() {
         >
           <Stack.Screen name="Locked" component={PinScreen} />
           <Stack.Screen name="Unlocked" component={UnlockedScreen} />
-          <Stack.Screen name="Set Pin" component={PinScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>
