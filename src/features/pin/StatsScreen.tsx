@@ -88,14 +88,7 @@ const StatsScreen = ({ navigation }: Props) => {
         </View>
       </View>
 
-      <View style={styles.buttonStyle}>
-        <Button
-          title="Go Back"
-          onPress={() => {
-            navigation.goBack()
-          }}
-        />
-      </View>
+
     </View>
   )
 }

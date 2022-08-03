@@ -29,7 +29,13 @@ function App() {
           >
             <Stack.Screen name="Locked" component={PinScreen} />
             <Stack.Screen name="Unlocked" component={UnlockedScreen} />
-            <Stack.Screen name="Stats" component={StatsScreen} />
+            <Stack.Screen
+              name="Stats"
+              component={StatsScreen}
+              options={{
+                headerShown: true,
+              }}
+            />
           </Stack.Navigator>
         </NavigationContainer>
       </PersistGate>
