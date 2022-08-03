@@ -9,8 +9,8 @@ import { setPin, setStatus, unlockPin } from "./pinSlice"
 type Props = NativeStackScreenProps<RootStackParamList, "Locked">
 
 const PinScreen = ({ navigation }: Props) => {
-  const status = useSelector((state: RootState) => state.pin.status)
-  const order = useSelector((state: RootState) => state.pin.order)
+  const status = useSelector((state: RootState) => state.status)
+  const order = useSelector((state: RootState) => state.order)
 
   const dispatch = useDispatch()
 
