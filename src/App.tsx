@@ -5,12 +5,14 @@ import { Text } from "react-native"
 import { Provider } from "react-redux"
 import { PersistGate } from "redux-persist/integration/react"
 import PinScreen from "./features/pin/PinScreen"
+import StatsScreen from "./features/pin/StatsScreen"
 import UnlockedScreen from "./features/pin/UnlockedScreen"
 import { persistor, store } from "./redux/store"
 
 export type RootStackParamList = {
   Locked: undefined
   Unlocked: undefined
+  Stats: undefined
 }
 
 const Stack = createNativeStackNavigator<RootStackParamList>()
@@ -27,6 +29,7 @@ function App() {
           >
             <Stack.Screen name="Locked" component={PinScreen} />
             <Stack.Screen name="Unlocked" component={UnlockedScreen} />
+            <Stack.Screen name="Stats" component={StatsScreen} />
           </Stack.Navigator>
         </NavigationContainer>
       </PersistGate>

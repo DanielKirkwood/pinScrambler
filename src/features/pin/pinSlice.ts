@@ -7,6 +7,12 @@ export interface PinState {
   status: string
   order: string[]
   layout: "random" | "normal"
+  numErrors: number
+  numRandomLayoutErrors: number
+  numNormalLayoutErrors: number
+  numSuccess: number
+  numNormalLayoutSuccess: number
+  numRandomLayoutSuccess: number
 }
 
 const initialState: PinState = {
@@ -14,6 +20,12 @@ const initialState: PinState = {
   status: "NOT SET",
   order: ["1", "4", "7", "2", "5", "8", "3", "6", "9", "0"],
   layout: "normal",
+  numErrors: 0,
+  numRandomLayoutErrors: 0,
+  numNormalLayoutErrors: 0,
+  numSuccess: 0,
+  numNormalLayoutSuccess: 0,
+  numRandomLayoutSuccess: 0,
 }
 
 export const pinSlice = createSlice({
@@ -25,11 +37,40 @@ export const pinSlice = createSlice({
       state.status = "READY"
     },
     unlockPin: (state, action: PayloadAction<string>) => {
+      // check PIN entered by user against the saved PIN
       const isMatching = action.payload === state.pin
-      if (state.layout === "random" && !isMatching) {
-        state.order = shuffle(state.order)
-      }
+
+      // update status based on matching result
       state.status = isMatching ? "SUCCESS" : "ERROR"
+
+      // if user entered wrong PIN, increase total errors
+      if (!isMatching) {
+        state.numErrors += 1
+
+        // check layout and increase desired metric
+        if (state.layout === "random") {
+          state.numRandomLayoutErrors += 1
+
+          // shuffle PIN order if error made on random layout to change PIN screen order
+          state.order = shuffle(state.order)
+        }
+
+        if (state.layout === "normal") {
+          state.numNormalLayoutErrors += 1
+        }
+      } else {
+        // successful sign in
+        state.numSuccess += 1
+
+        // check layout and increase desired metric
+        if (state.layout === "random") {
+          state.numRandomLayoutSuccess += 1
+        }
+
+        if (state.layout === "normal") {
+          state.numNormalLayoutSuccess += 1
+        }
+      }
     },
     setStatus: (state, action: PayloadAction<string>) => {
       state.status = action.payload

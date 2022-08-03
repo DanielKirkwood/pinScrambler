@@ -10,7 +10,7 @@ type Props = NativeStackScreenProps<RootStackParamList, "Unlocked">
 
 const UnlockedScreen = ({ navigation }: Props) => {
   const dispatch = useDispatch()
-  const layout = useSelector((state: RootState) => state.pin.layout)
+  const layout = useSelector((state: RootState) => state.layout)
 
   const renderButton = () => {
     const buttonTitle = layout === "normal" ? "random" : "normal"
@@ -66,6 +66,14 @@ const UnlockedScreen = ({ navigation }: Props) => {
         </View>
       </View>
       {renderButton()}
+      <View style={styles.buttonStyle}>
+        <Button
+          title="Go To Stats Page"
+          onPress={() => {
+            navigation.navigate("Stats")
+          }}
+        />
+      </View>
     </View>
   )
 }
