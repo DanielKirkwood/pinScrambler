@@ -13,7 +13,12 @@ import { SafeAreaView } from "react-native-safe-area-context"
 import { useDispatch, useSelector } from "react-redux"
 import { RootStackParamList } from "src/App"
 import { RootState } from "src/redux/store"
-import { resetErrorStats, resetPinHistory, resetSuccessStats } from "./pinSlice"
+import {
+  resetErrorStats,
+  resetPinHistory,
+  resetSuccessStats,
+  resetTime,
+} from "./pinSlice"
 
 type Props = NativeStackScreenProps<RootStackParamList, "Unlocked">
 
@@ -37,6 +42,11 @@ const StatsScreen = ({ navigation }: Props) => {
   const numNormalLayoutSuccess = useSelector(
     (state: RootState) => state.numNormalLayoutSuccess,
   )
+
+  // Time Data
+  const totalTime = useSelector((state: RootState) => state.totalTimeTaken)
+  const timeNormal = useSelector((state: RootState) => state.timeTakenNormal)
+  const timeRandom = useSelector((state: RootState) => state.timeTakenRandom)
 
   // PIN History
   const pinList = useSelector((state: RootState) => state.pinList)
@@ -107,6 +117,32 @@ const StatsScreen = ({ navigation }: Props) => {
               title="Reset Success Stats"
               onPress={() => {
                 dispatch(resetSuccessStats())
+              }}
+            />
+          </View>
+        </View>
+
+        <View>
+          <Text>Time Taken (milliseconds)</Text>
+
+          <DataTable>
+            <DataTable.Header>
+              <DataTable.Title numeric>Total Time</DataTable.Title>
+              <DataTable.Title numeric>Time (Random)</DataTable.Title>
+              <DataTable.Title numeric>Time (Normal)</DataTable.Title>
+            </DataTable.Header>
+
+            <DataTable.Row>
+              <DataTable.Cell numeric>{totalTime}</DataTable.Cell>
+              <DataTable.Cell numeric>{timeRandom}</DataTable.Cell>
+              <DataTable.Cell numeric>{timeNormal}</DataTable.Cell>
+            </DataTable.Row>
+          </DataTable>
+          <View style={styles.buttonStyle}>
+            <Button
+              title="Reset Time Stats"
+              onPress={() => {
+                dispatch(resetTime())
               }}
             />
           </View>

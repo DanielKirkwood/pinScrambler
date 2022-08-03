@@ -14,6 +14,9 @@ export interface PinState {
   numNormalLayoutSuccess: number
   numRandomLayoutSuccess: number
   pinList: string[]
+  totalTimeTaken: number
+  timeTakenRandom: number
+  timeTakenNormal: number
 }
 
 const initialState: PinState = {
@@ -28,6 +31,9 @@ const initialState: PinState = {
   numNormalLayoutSuccess: 0,
   numRandomLayoutSuccess: 0,
   pinList: [],
+  totalTimeTaken: 0,
+  timeTakenRandom: 0,
+  timeTakenNormal: 0,
 }
 
 export const pinSlice = createSlice({
@@ -110,6 +116,22 @@ export const pinSlice = createSlice({
     resetPinHistory: (state) => {
       state.pinList = []
     },
+    addTime: (state, action: PayloadAction<number>) => {
+      state.totalTimeTaken += action.payload
+
+      if (state.layout === "random") {
+        state.timeTakenRandom += action.payload
+      } else {
+        state.timeTakenNormal += action.payload
+      }
+    },
+    resetTime: (state) => {
+      state.totalTimeTaken = 0
+
+      state.timeTakenRandom = 0
+
+      state.timeTakenNormal = 0
+    },
   },
 })
 
@@ -124,5 +146,7 @@ export const {
   resetErrorStats,
   resetSuccessStats,
   resetPinHistory,
+  addTime,
+  resetTime,
 } = pinSlice.actions
 export default pinSlice.reducer

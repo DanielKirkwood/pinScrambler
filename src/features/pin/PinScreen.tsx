@@ -4,9 +4,15 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native"
 import { useDispatch, useSelector } from "react-redux"
 import type { RootStackParamList } from "../../App"
 import { RootState } from "../../redux/store"
-import { setPin, setStatus, unlockPin } from "./pinSlice"
+import { addTime, setPin, setStatus, unlockPin } from "./pinSlice"
 
 type Props = NativeStackScreenProps<RootStackParamList, "Locked">
+
+function getTimeDiff(startDate: Date, endDate: Date) {
+  // const msInSecond = 1000
+
+  return Math.round(Math.abs(endDate.getTime() - startDate.getTime()))
+}
 
 const PinScreen = ({ navigation }: Props) => {
   const status = useSelector((state: RootState) => state.status)
@@ -14,7 +20,11 @@ const PinScreen = ({ navigation }: Props) => {
 
   const dispatch = useDispatch()
 
-  const [userPin, setUserPin] = useState("")
+  const [userPin, setUserPin] = useState<string>("")
+  const [attempts, setAttempts] = useState<number>(0)
+
+  let firstTime = new Date()
+  let lastTime = new Date()
 
   if (userPin.length === 4) {
     if (status === "NOT SET") {
@@ -22,12 +32,31 @@ const PinScreen = ({ navigation }: Props) => {
       setUserPin("")
     } else {
       dispatch(unlockPin(userPin))
+
+      if (status !== "SUCCESS") {
+        setAttempts(attempts + 1)
+      }
       setUserPin("")
     }
   }
 
+  if (userPin.length === 1 && attempts === 0 && status !== "NOT SET") {
+    // start taking time once user clicks first input
+    firstTime = new Date()
+    console.log("start time: ", firstTime)
+  }
+
   useEffect(() => {
     if (status === "SUCCESS") {
+      // record time taken to complete pin
+      lastTime = new Date()
+      console.log("end time: ", lastTime)
+
+      let time: number = getTimeDiff(firstTime, lastTime)
+      console.log("time: ", time)
+
+      dispatch(addTime(time))
+      setAttempts(0)
       dispatch(setStatus("READY"))
       navigation.navigate("Unlocked")
     }
