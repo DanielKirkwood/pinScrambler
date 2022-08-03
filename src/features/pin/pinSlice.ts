@@ -13,6 +13,7 @@ export interface PinState {
   numSuccess: number
   numNormalLayoutSuccess: number
   numRandomLayoutSuccess: number
+  pinList: string[]
 }
 
 const initialState: PinState = {
@@ -26,6 +27,7 @@ const initialState: PinState = {
   numSuccess: 0,
   numNormalLayoutSuccess: 0,
   numRandomLayoutSuccess: 0,
+  pinList: [],
 }
 
 export const pinSlice = createSlice({
@@ -33,6 +35,9 @@ export const pinSlice = createSlice({
   initialState,
   reducers: {
     setPin: (state, action: PayloadAction<string>) => {
+      // add to pin history
+      state.pinList.push(action.payload)
+
       state.pin = action.payload
       state.status = "READY"
     },
@@ -92,6 +97,16 @@ export const pinSlice = createSlice({
     shuffleOrder: (state) => {
       state.order = shuffle(state.order)
     },
+    resetErrorStats: (state) => {
+      state.numErrors = 0
+      state.numNormalLayoutErrors = 0
+      state.numRandomLayoutErrors = 0
+    },
+    resetSuccessStats: (state) => {
+      state.numSuccess = 0
+      state.numNormalLayoutSuccess = 0
+      state.numRandomLayoutSuccess = 0
+    },
   },
 })
 
@@ -103,5 +118,7 @@ export const {
   changeLayout,
   resetOrder,
   shuffleOrder,
+  resetErrorStats,
+  resetSuccessStats,
 } = pinSlice.actions
 export default pinSlice.reducer
