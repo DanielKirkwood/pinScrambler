@@ -107,6 +107,9 @@ export const pinSlice = createSlice({
       state.numNormalLayoutSuccess = 0
       state.numRandomLayoutSuccess = 0
     },
+    resetPinHistory: (state) => {
+      state.pinList = []
+    },
   },
 })
 
@@ -120,5 +123,6 @@ export const {
   shuffleOrder,
   resetErrorStats,
   resetSuccessStats,
+  resetPinHistory,
 } = pinSlice.actions
 export default pinSlice.reducer
