@@ -2,7 +2,7 @@ import type { NativeStackScreenProps } from "@react-navigation/native-stack"
 import React, { useEffect, useState } from "react"
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native"
 import { useDispatch, useSelector } from "react-redux"
-import type { RootStackParamList } from "../../../App"
+import type { RootStackParamList } from "../../App"
 import { RootState } from "../../store/store"
 import { setPin, setStatus, unlockPin } from "./pinSlice"
 
