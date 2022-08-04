@@ -44,17 +44,14 @@ const PinScreen = ({ navigation }: Props) => {
   if (userPin.length === 1 && attempts === 0 && status !== "NOT SET") {
     // start taking time once user clicks first input
     firstTime = new Date()
-    console.log("start time: ", firstTime)
   }
 
   useEffect(() => {
     if (status === "SUCCESS") {
       // record time taken to complete pin
       lastTime = new Date()
-      console.log("end time: ", lastTime)
 
       let time: number = getTimeDiff(firstTime, lastTime)
-      console.log("time: ", time)
 
       dispatch(addTime(time))
       setAttempts(0)
