@@ -1,4 +1,5 @@
-import RNFetchBlob from "react-native-fetch-blob"
+import { Platform } from "react-native"
+import RNFetchBlob from "rn-fetch-blob"
 
 function writeToCSV(filename: string, data: string[][], headers: string[]) {
   // construct csvString
@@ -7,7 +8,10 @@ function writeToCSV(filename: string, data: string[][], headers: string[]) {
   const csvString = `${headerString}${rowString}`
 
   // write the current list of answers to a local csv file
-  const pathToWrite = `${RNFetchBlob.fs.dirs.DownloadDir}/${filename}.csv`
+  const pathToWrite =
+    Platform.OS === "ios"
+      ? `${RNFetchBlob.fs.dirs.DocumentDir}/${filename}.csv`
+      : `${RNFetchBlob.fs.dirs.DownloadDir}/${filename}.csv`
   console.log("pathToWrite", pathToWrite)
   // pathToWrite /storage/emulated/0/Download/data.csv
   RNFetchBlob.fs
