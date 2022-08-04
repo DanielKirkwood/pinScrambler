@@ -132,6 +132,22 @@ export const pinSlice = createSlice({
 
       state.timeTakenNormal = 0
     },
+    resetAllStats: (state) => {
+      state.pin = ""
+      state.status = "NOT SET"
+      state.order = ["1", "4", "7", "2", "5", "8", "3", "6", "9", "0"]
+      state.layout = "normal"
+      state.numErrors = 0
+      state.numRandomLayoutErrors = 0
+      state.numNormalLayoutErrors = 0
+      state.numSuccess = 0
+      state.numNormalLayoutSuccess = 0
+      state.numRandomLayoutSuccess = 0
+      state.pinList = []
+      state.totalTimeTaken = 0
+      state.timeTakenRandom = 0
+      state.timeTakenNormal = 0
+    },
   },
 })
 
@@ -148,5 +164,6 @@ export const {
   resetPinHistory,
   addTime,
   resetTime,
+  resetAllStats,
 } = pinSlice.actions
 export default pinSlice.reducer

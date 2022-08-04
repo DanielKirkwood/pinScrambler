@@ -13,12 +13,7 @@ import { SafeAreaView } from "react-native-safe-area-context"
 import { useDispatch, useSelector } from "react-redux"
 import { RootStackParamList } from "src/App"
 import { RootState } from "src/redux/store"
-import {
-  resetErrorStats,
-  resetPinHistory,
-  resetSuccessStats,
-  resetTime,
-} from "./pinSlice"
+import { resetAllStats } from "./pinSlice"
 
 type Props = NativeStackScreenProps<RootStackParamList, "Unlocked">
 
@@ -67,29 +62,33 @@ const StatsScreen = ({ navigation }: Props) => {
     <SafeAreaView style={styles.container}>
       <ScrollView>
         <View>
-          <Text>Error Stats</Text>
+          <Text>Normal Layout</Text>
 
           <DataTable>
             <DataTable.Header>
-              <DataTable.Title numeric>Total Errors</DataTable.Title>
-              <DataTable.Title numeric>Errors (Random)</DataTable.Title>
-              <DataTable.Title numeric>Errors (Normal)</DataTable.Title>
+              <DataTable.Title numberOfLines={3} numeric>
+                Successful Unlocks
+              </DataTable.Title>
+              <DataTable.Title numberOfLines={3} numeric>
+                Unsuccessful Unlocks
+              </DataTable.Title>
+              <DataTable.Title numberOfLines={3} numeric>
+                Total Attempts
+              </DataTable.Title>
+              <DataTable.Title numberOfLines={3} numeric>
+                Total Time Spent Unlocking (milliseconds)
+              </DataTable.Title>
             </DataTable.Header>
 
             <DataTable.Row>
-              <DataTable.Cell numeric>{numErrors}</DataTable.Cell>
-              <DataTable.Cell numeric>{numRandomLayoutErrors}</DataTable.Cell>
+              <DataTable.Cell numeric>{numNormalLayoutSuccess}</DataTable.Cell>
               <DataTable.Cell numeric>{numNormalLayoutErrors}</DataTable.Cell>
+              <DataTable.Cell numeric>
+                {numNormalLayoutSuccess + numNormalLayoutErrors}
+              </DataTable.Cell>
+              <DataTable.Cell numeric>{timeNormal}</DataTable.Cell>
             </DataTable.Row>
           </DataTable>
-          <View style={styles.buttonStyle}>
-            <Button
-              title="Reset Error Stats"
-              onPress={() => {
-                dispatch(resetErrorStats())
-              }}
-            />
-          </View>
         </View>
 
         <View
@@ -97,58 +96,76 @@ const StatsScreen = ({ navigation }: Props) => {
             paddingTop: 30,
           }}
         >
-          <Text>Success Stats</Text>
+          <Text>Random Layout</Text>
           <DataTable>
             <DataTable.Header>
-              <DataTable.Title numeric>Total Success</DataTable.Title>
-              <DataTable.Title numeric>Success (Random)</DataTable.Title>
-              <DataTable.Title numeric>Success (Normal)</DataTable.Title>
+              <DataTable.Title numberOfLines={3} numeric>
+                Successful Unlocks
+              </DataTable.Title>
+              <DataTable.Title numberOfLines={3} numeric>
+                Unsuccessful Unlocks
+              </DataTable.Title>
+              <DataTable.Title numberOfLines={3} numeric>
+                Total Attempts
+              </DataTable.Title>
+              <DataTable.Title numberOfLines={3} numeric>
+                Total Time Spent Unlocking (milliseconds)
+              </DataTable.Title>
+            </DataTable.Header>
+
+            <DataTable.Row>
+              <DataTable.Cell numeric>{numRandomLayoutSuccess}</DataTable.Cell>
+              <DataTable.Cell numeric>{numRandomLayoutErrors}</DataTable.Cell>
+              <DataTable.Cell numeric>
+                {numRandomLayoutSuccess + numRandomLayoutErrors}
+              </DataTable.Cell>
+              <DataTable.Cell numeric>{timeRandom}</DataTable.Cell>
+            </DataTable.Row>
+          </DataTable>
+        </View>
+
+        <View
+          style={{
+            paddingTop: 30,
+          }}
+        >
+          <Text>Total Stats</Text>
+
+          <DataTable>
+            <DataTable.Header>
+              <DataTable.Title numberOfLines={3} numeric>
+                Successful Unlocks
+              </DataTable.Title>
+              <DataTable.Title numberOfLines={3} numeric>
+                Unsuccessful Unlocks
+              </DataTable.Title>
+              <DataTable.Title numberOfLines={3} numeric>
+                Total Attempts
+              </DataTable.Title>
+              <DataTable.Title numberOfLines={3} numeric>
+                Total Time Spent Unlocking (milliseconds)
+              </DataTable.Title>
             </DataTable.Header>
 
             <DataTable.Row>
               <DataTable.Cell numeric>{numSuccess}</DataTable.Cell>
-              <DataTable.Cell numeric>{numRandomLayoutSuccess}</DataTable.Cell>
-              <DataTable.Cell numeric>{numNormalLayoutSuccess}</DataTable.Cell>
-            </DataTable.Row>
-          </DataTable>
-
-          <View style={styles.buttonStyle}>
-            <Button
-              title="Reset Success Stats"
-              onPress={() => {
-                dispatch(resetSuccessStats())
-              }}
-            />
-          </View>
-        </View>
-
-        <View>
-          <Text>Time Taken (milliseconds)</Text>
-
-          <DataTable>
-            <DataTable.Header>
-              <DataTable.Title numeric>Total Time</DataTable.Title>
-              <DataTable.Title numeric>Time (Random)</DataTable.Title>
-              <DataTable.Title numeric>Time (Normal)</DataTable.Title>
-            </DataTable.Header>
-
-            <DataTable.Row>
+              <DataTable.Cell numeric>{numErrors}</DataTable.Cell>
+              <DataTable.Cell numeric>
+                {numNormalLayoutSuccess +
+                  numRandomLayoutSuccess +
+                  numRandomLayoutErrors +
+                  numRandomLayoutErrors}
+              </DataTable.Cell>
               <DataTable.Cell numeric>{totalTime}</DataTable.Cell>
-              <DataTable.Cell numeric>{timeRandom}</DataTable.Cell>
-              <DataTable.Cell numeric>{timeNormal}</DataTable.Cell>
             </DataTable.Row>
           </DataTable>
-          <View style={styles.buttonStyle}>
-            <Button
-              title="Reset Time Stats"
-              onPress={() => {
-                dispatch(resetTime())
-              }}
-            />
-          </View>
         </View>
 
-        <View>
+        <View
+          style={{
+            paddingTop: 30,
+          }}
+        >
           <Text>PIN History</Text>
           <View>
             {pinHistory.map((item) => {
@@ -161,13 +178,14 @@ const StatsScreen = ({ navigation }: Props) => {
               )
             })}
           </View>
-          <View style={styles.buttonStyle}>
-            <Button
-              title="Reset Pin History"
-              onPress={() => {
-                dispatch(resetPinHistory())
-              }}
-            />
+
+          <View>
+            <View style={styles.buttonStyle}>
+              <Button
+                title="Reset All Stats"
+                onPress={() => dispatch(resetAllStats())}
+              />
+            </View>
           </View>
         </View>
       </ScrollView>
