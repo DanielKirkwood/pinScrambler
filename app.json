@@ -1,8 +1,11 @@
 {
+  "name": "prototype",
+  "displayName": "prototype",
   "expo": {
     "name": "prototype",
     "slug": "prototype",
     "version": "1.0.0",
+    "sdkVersion": "44.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -13,9 +16,7 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.danielkirkwood.prototype"
