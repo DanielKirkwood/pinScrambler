@@ -153,7 +153,7 @@ const StatsScreen = ({ navigation }: Props) => {
               <DataTable.Cell numeric>
                 {numNormalLayoutSuccess +
                   numRandomLayoutSuccess +
-                  numRandomLayoutErrors +
+                  numNormalLayoutErrors +
                   numRandomLayoutErrors}
               </DataTable.Cell>
               <DataTable.Cell numeric>{totalTime}</DataTable.Cell>
@@ -179,9 +179,17 @@ const StatsScreen = ({ navigation }: Props) => {
             })}
           </View>
 
-          <View>
+          <View style={styles.twoButtons}>
             <View style={styles.buttonStyle}>
               <Button
+                color={"blue"}
+                title="Download Stats"
+                onPress={() => null}
+              />
+            </View>
+            <View style={styles.buttonStyle}>
+              <Button
+                color={"red"}
                 title="Reset All Stats"
                 onPress={() => dispatch(resetAllStats())}
               />
@@ -205,6 +213,12 @@ const styles = StyleSheet.create({
     padding: 10,
     fontSize: 18,
     height: 44,
+  },
+  twoButtons: {
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
   },
 })
 

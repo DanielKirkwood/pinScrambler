@@ -9,9 +9,10 @@ import { addTime, setPin, setStatus, unlockPin } from "./pinSlice"
 type Props = NativeStackScreenProps<RootStackParamList, "Locked">
 
 function getTimeDiff(startDate: Date, endDate: Date) {
+  // if you want seconds then divide by 1000
   // const msInSecond = 1000
 
-  return Math.round(Math.abs(endDate.getTime() - startDate.getTime()))
+  return Math.abs(endDate.getTime() - startDate.getTime())
 }
 
 const PinScreen = ({ navigation }: Props) => {
