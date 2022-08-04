@@ -2,18 +2,13 @@ import type { NativeStackScreenProps } from "@react-navigation/native-stack"
 import React, { useEffect, useState } from "react"
 import { Button, StyleSheet, Text, TouchableOpacity, View } from "react-native"
 import { useDispatch, useSelector } from "react-redux"
-import type { RootStackParamList } from "../../App"
 import { RootState } from "../../redux/store"
+import { getTimeDiff } from "../../util/time"
+import type { RootStackParamList } from "../navigation/Navigation"
 import { addTime, setPin, setStatus, unlockPin } from "./pinSlice"
 
 type Props = NativeStackScreenProps<RootStackParamList, "Locked">
 
-function getTimeDiff(startDate: Date, endDate: Date) {
-  // if you want seconds then divide by 1000
-  // const msInSecond = 1000
-
-  return Math.abs(endDate.getTime() - startDate.getTime())
-}
 
 const PinScreen = ({ navigation }: Props) => {
   const status = useSelector((state: RootState) => state.status)

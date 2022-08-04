@@ -1,9 +1,10 @@
 import type { NativeStackScreenProps } from "@react-navigation/native-stack"
-import React from "react"
+import React, { useEffect } from "react"
 import { Button, StyleSheet, Text, View } from "react-native"
 import { useDispatch, useSelector } from "react-redux"
-import { RootStackParamList } from "../../App"
 import { RootState } from "../../redux/store"
+import { RootStackParamList } from "../navigation/Navigation"
+import { signUserOut } from "../saveData/dataSlice"
 import { changeLayout, clearPin, resetOrder, shuffleOrder } from "./pinSlice"
 
 type Props = NativeStackScreenProps<RootStackParamList, "Unlocked">
@@ -11,6 +12,13 @@ type Props = NativeStackScreenProps<RootStackParamList, "Unlocked">
 const UnlockedScreen = ({ navigation }: Props) => {
   const dispatch = useDispatch()
   const layout = useSelector((state: RootState) => state.layout)
+  const loggedInUser = useSelector((state: RootState) => state.uid)
+
+  useEffect(() => {
+    if (loggedInUser === null) {
+      navigation.navigate("Login")
+    }
+  }, [loggedInUser])
 
   const renderButton = () => {
     const buttonTitle = layout === "normal" ? "random" : "normal"
@@ -51,7 +59,7 @@ const UnlockedScreen = ({ navigation }: Props) => {
               if (layout === "random") {
                 dispatch(shuffleOrder())
               }
-              navigation.goBack()
+              navigation.navigate("Locked")
             }}
           />
         </View>
@@ -60,7 +68,7 @@ const UnlockedScreen = ({ navigation }: Props) => {
             title="Change PIN"
             onPress={() => {
               dispatch(clearPin())
-              navigation.goBack()
+              navigation.navigate("Locked")
             }}
           />
         </View>
@@ -71,6 +79,14 @@ const UnlockedScreen = ({ navigation }: Props) => {
           title="Go To Stats Page"
           onPress={() => {
             navigation.navigate("Stats")
+          }}
+        />
+      </View>
+      <View style={styles.buttonStyle}>
+        <Button
+          title="Log out"
+          onPress={() => {
+            dispatch(signUserOut())
           }}
         />
       </View>

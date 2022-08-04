@@ -10,7 +10,7 @@ import {
   REGISTER,
   REHYDRATE,
 } from "redux-persist"
-import pinReducer from "../features/pin/pinSlice"
+import dataReducer from "../features/saveData/dataSlice"
 
 const persistConfig = {
   key: "root",
@@ -18,7 +18,7 @@ const persistConfig = {
   storage: AsyncStorage,
 }
 
-const persistedReducer = persistReducer(persistConfig, pinReducer)
+const persistedReducer = persistReducer(persistConfig, dataReducer)
 
 export const store = configureStore({
   reducer: persistedReducer,
