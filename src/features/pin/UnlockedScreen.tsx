@@ -1,5 +1,5 @@
 import type { NativeStackScreenProps } from "@react-navigation/native-stack"
-import React, { useEffect } from "react"
+import React from "react"
 import { Button, StyleSheet, Text, View } from "react-native"
 import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "../../redux/store"
@@ -13,12 +13,6 @@ const UnlockedScreen = ({ navigation }: Props) => {
   const dispatch = useDispatch()
   const layout = useSelector((state: RootState) => state.layout)
   const loggedInUser = useSelector((state: RootState) => state.uid)
-
-  useEffect(() => {
-    if (loggedInUser === null) {
-      navigation.navigate("Login")
-    }
-  }, [loggedInUser])
 
   const renderButton = () => {
     const buttonTitle = layout === "normal" ? "random" : "normal"
@@ -34,7 +28,7 @@ const UnlockedScreen = ({ navigation }: Props) => {
             } else {
               dispatch(resetOrder())
             }
-            navigation.goBack()
+            navigation.navigate("Locked")
           }}
         />
       </View>
@@ -49,7 +43,7 @@ const UnlockedScreen = ({ navigation }: Props) => {
           padding: 20,
         }}
       >
-        Unlocked
+        {`Unlocked - (uid ${loggedInUser})`}
       </Text>
       <View style={{ flexDirection: "row" }}>
         <View style={styles.buttonStyle}>
@@ -84,6 +78,7 @@ const UnlockedScreen = ({ navigation }: Props) => {
       </View>
       <View style={styles.buttonStyle}>
         <Button
+          color="red"
           title="Log out"
           onPress={() => {
             dispatch(signUserOut())
