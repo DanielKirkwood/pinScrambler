@@ -1,6 +1,6 @@
 import type { NativeStackScreenProps } from "@react-navigation/native-stack"
 import React, { useEffect, useState } from "react"
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native"
+import { Button, StyleSheet, Text, TouchableOpacity, View } from "react-native"
 import { useDispatch, useSelector } from "react-redux"
 import type { RootStackParamList } from "../../App"
 import { RootState } from "../../redux/store"
@@ -162,6 +162,28 @@ const PinScreen = ({ navigation }: Props) => {
         <View>
           <View>{renderPinButton(order[9])}</View>
         </View>
+
+        <View
+          style={{
+            borderRadius: 25,
+            alignItems: "center",
+            justifyContent: "center",
+            position: "absolute", //Here is the trick
+            bottom: 25,
+            alignSelf: "flex-start",
+          }}
+        >
+          <Button
+            title="Unlock"
+            onPress={() => {
+              setUserPin("")
+              dispatch(setStatus("READY"))
+              navigation.navigate("Unlocked")
+            }}
+            color="white"
+          />
+        </View>
+
         <View
           style={{
             borderRadius: 25,
@@ -172,21 +194,11 @@ const PinScreen = ({ navigation }: Props) => {
             alignSelf: "flex-end",
           }}
         >
-          <TouchableOpacity
-            onPress={(e) =>
-              setUserPin(userPin.substring(0, userPin.length - 1))
-            }
-          >
-            <Text
-              style={{
-                color: "white",
-                fontSize: 16,
-                paddingRight: 15,
-              }}
-            >
-              Delete
-            </Text>
-          </TouchableOpacity>
+          <Button
+            title="Delete"
+            onPress={() => setUserPin(userPin.substring(0, userPin.length - 1))}
+            color="white"
+          />
         </View>
       </View>
     </View>
@@ -226,6 +238,12 @@ const styles = StyleSheet.create({
   number: {
     color: "white",
     fontSize: 24,
+  },
+  twoButtons: {
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
   },
 })
 
