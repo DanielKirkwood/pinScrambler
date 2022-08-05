@@ -3,6 +3,7 @@ import React from "react"
 import { Button, StyleSheet, Text, View } from "react-native"
 import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "../../redux/store"
+import writeToCSV from "../../util/writeCSV"
 import { RootStackParamList } from "../navigation/Navigation"
 import { resetPin, signUserOut, swapLayout } from "../saveData/dataSlice"
 
@@ -13,6 +14,7 @@ const UnlockedScreen = ({ navigation }: Props) => {
   const layout = useSelector((state: RootState) => state.layout)
   const loggedInUser = useSelector((state: RootState) => state.uid)
   const currentPin = useSelector((state: RootState) => state.currentPin)
+  const data = useSelector((state: RootState) => state.data)
 
   const renderButton = () => {
     const isNormal = layout === "normal"
@@ -61,7 +63,14 @@ const UnlockedScreen = ({ navigation }: Props) => {
         </View>
       </View>
       {renderButton()}
-
+      <View style={styles.buttonStyle}>
+        <Button
+          title="Download csv"
+          onPress={() => {
+            writeToCSV("test", data)
+          }}
+        />
+      </View>
       <View style={styles.buttonStyle}>
         <Button
           color="red"

@@ -2,7 +2,7 @@ import type { PayloadAction } from "@reduxjs/toolkit"
 import { createSlice } from "@reduxjs/toolkit"
 import shuffle from "../../util/shufflePins"
 
-interface SavedData {
+export interface SavedData {
   uid: number | null
   pin: string
   layout: "normal" | "random"
