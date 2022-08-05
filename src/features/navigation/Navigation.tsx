@@ -5,14 +5,12 @@ import { useSelector } from "react-redux"
 import { RootState } from "../../redux/store"
 import LoginScreen from "../auth/LoginScreen"
 import PinScreen from "../pin/PinScreen"
-import StatsScreen from "../pin/StatsScreen"
 import UnlockedScreen from "../pin/UnlockedScreen"
 
 export type RootStackParamList = {
   Login: undefined
   Locked: undefined
   Unlocked: undefined
-  Stats: undefined
 }
 
 const Stack = createNativeStackNavigator<RootStackParamList>()
@@ -35,13 +33,6 @@ const Navigation = () => {
           <>
             <Stack.Screen name="Unlocked" component={UnlockedScreen} />
             <Stack.Screen name="Locked" component={PinScreen} />
-            <Stack.Screen
-              name="Stats"
-              component={StatsScreen}
-              options={{
-                headerShown: true,
-              }}
-            />
           </>
         )}
       </Stack.Navigator>

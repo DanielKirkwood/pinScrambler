@@ -16,10 +16,8 @@ type Props = NativeStackScreenProps<RootStackParamList, "Locked">
 
 const PinScreen = ({ navigation }: Props) => {
   // data required from store
-  const layout = useSelector((state: RootState) => state.layout)
   const status = useSelector((state: RootState) => state.entryStatus)
   const order = useSelector((state: RootState) => state.order)
-  const currentPin = useSelector((state: RootState) => state.currentPin)
   const attempts = useSelector((state: RootState) => state.currentAttempts)
   const dispatch = useDispatch()
 

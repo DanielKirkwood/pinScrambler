@@ -61,14 +61,7 @@ const UnlockedScreen = ({ navigation }: Props) => {
         </View>
       </View>
       {renderButton()}
-      <View style={styles.buttonStyle}>
-        <Button
-          title="Go To Stats Page"
-          onPress={() => {
-            navigation.navigate("Stats")
-          }}
-        />
-      </View>
+
       <View style={styles.buttonStyle}>
         <Button
           color="red"
