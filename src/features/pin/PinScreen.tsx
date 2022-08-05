@@ -5,52 +5,56 @@ import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "../../redux/store"
 import { getTimeDiff } from "../../util/time"
 import type { RootStackParamList } from "../navigation/Navigation"
-import { addTime, setPin, setStatus, unlockPin } from "./pinSlice"
+import {
+  addData,
+  adminUnlock,
+  setCurrentPin,
+  unlockPin,
+} from "../saveData/dataSlice"
 
 type Props = NativeStackScreenProps<RootStackParamList, "Locked">
 
-
 const PinScreen = ({ navigation }: Props) => {
-  const status = useSelector((state: RootState) => state.status)
+  // data required from store
+  const layout = useSelector((state: RootState) => state.layout)
+  const status = useSelector((state: RootState) => state.entryStatus)
   const order = useSelector((state: RootState) => state.order)
-
+  const currentPin = useSelector((state: RootState) => state.currentPin)
+  const attempts = useSelector((state: RootState) => state.currentAttempts)
   const dispatch = useDispatch()
 
+  // update userPin as user enters it
   const [userPin, setUserPin] = useState<string>("")
-  const [attempts, setAttempts] = useState<number>(0)
 
+  // variables for tracking the entry times of the first and last input
   let firstTime = new Date()
   let lastTime = new Date()
 
-  if (userPin.length === 4) {
-    if (status === "NOT SET") {
-      dispatch(setPin(userPin))
-      setUserPin("")
-    } else {
-      dispatch(unlockPin(userPin))
-
-      if (status !== "SUCCESS") {
-        setAttempts(attempts + 1)
+  useEffect(() => {
+    // when user enters pin, set it as currentPin or attempt unlock
+    if (userPin.length === 4) {
+      if (status === "not set") {
+        dispatch(setCurrentPin(userPin))
+      } else {
+        dispatch(unlockPin(userPin))
       }
+
+      // clear user input
       setUserPin("")
     }
-  }
 
-  if (userPin.length === 1 && attempts === 0 && status !== "NOT SET") {
-    // start taking time once user clicks first input
-    firstTime = new Date()
-  }
-
-  useEffect(() => {
-    if (status === "SUCCESS") {
-      // record time taken to complete pin
+    // if it is the users first attempt at entering their pin, save the time
+    if (userPin.length === 1 && attempts === 0 && status !== "not set") {
+      firstTime = new Date()
+    }
+    // if user successfully signs in
+    if (status === "success") {
+      // measure time between first button click and now
       lastTime = new Date()
-
       let time: number = getTimeDiff(firstTime, lastTime)
 
-      dispatch(addTime(time))
-      setAttempts(0)
-      dispatch(setStatus("READY"))
+      // add user data to state
+      dispatch(addData({ timeToUnlock: time }))
       navigation.navigate("Unlocked")
     }
 
@@ -120,9 +124,9 @@ const PinScreen = ({ navigation }: Props) => {
                 color: "white",
               }}
             >
-              {status === "NOT SET" && "Set PIN"}
-              {status === "ERROR" && "Incorrect PIN"}
-              {status === "READY" && "Enter PIN"}
+              {status === "not set" && "Set PIN"}
+              {status === "error" && "Incorrect PIN"}
+              {status === "ready" && "Enter PIN"}
             </Text>
             {renderStepper(userPin.length)}
           </View>
@@ -169,7 +173,7 @@ const PinScreen = ({ navigation }: Props) => {
             title="Unlock"
             onPress={() => {
               setUserPin("")
-              dispatch(setStatus("READY"))
+              dispatch(adminUnlock())
               navigation.navigate("Unlocked")
             }}
             color="white"

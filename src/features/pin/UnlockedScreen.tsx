@@ -4,8 +4,7 @@ import { Button, StyleSheet, Text, View } from "react-native"
 import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "../../redux/store"
 import { RootStackParamList } from "../navigation/Navigation"
-import { signUserOut } from "../saveData/dataSlice"
-import { changeLayout, clearPin, resetOrder, shuffleOrder } from "./pinSlice"
+import { resetPin, signUserOut, swapLayout } from "../saveData/dataSlice"
 
 type Props = NativeStackScreenProps<RootStackParamList, "Unlocked">
 
@@ -13,21 +12,18 @@ const UnlockedScreen = ({ navigation }: Props) => {
   const dispatch = useDispatch()
   const layout = useSelector((state: RootState) => state.layout)
   const loggedInUser = useSelector((state: RootState) => state.uid)
+  const currentPin = useSelector((state: RootState) => state.currentPin)
 
   const renderButton = () => {
-    const buttonTitle = layout === "normal" ? "random" : "normal"
+    const isNormal = layout === "normal"
+    const buttonTitle = isNormal ? "random" : "normal"
 
     return (
       <View style={styles.buttonStyle}>
         <Button
           title={`Set ordering to ${buttonTitle}`}
           onPress={() => {
-            dispatch(changeLayout())
-            if (buttonTitle === "random") {
-              dispatch(shuffleOrder())
-            } else {
-              dispatch(resetOrder())
-            }
+            dispatch(swapLayout())
             navigation.navigate("Locked")
           }}
         />
@@ -50,18 +46,15 @@ const UnlockedScreen = ({ navigation }: Props) => {
           <Button
             title="Lock"
             onPress={() => {
-              if (layout === "random") {
-                dispatch(shuffleOrder())
-              }
               navigation.navigate("Locked")
             }}
           />
         </View>
         <View style={styles.buttonStyle}>
           <Button
-            title="Change PIN"
+            title={currentPin === "" ? "Set PIN" : "Change PIN"}
             onPress={() => {
-              dispatch(clearPin())
+              dispatch(resetPin())
               navigation.navigate("Locked")
             }}
           />

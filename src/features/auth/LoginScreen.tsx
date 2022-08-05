@@ -2,8 +2,7 @@ import type { NativeStackScreenProps } from "@react-navigation/native-stack"
 import { StatusBar } from "expo-status-bar"
 import React, { useState } from "react"
 import { Button, StyleSheet, Text, TextInput, View } from "react-native"
-import { useDispatch, useSelector } from "react-redux"
-import { RootState } from "../../redux/store"
+import { useDispatch } from "react-redux"
 import { RootStackParamList } from "../navigation/Navigation"
 import { setUser } from "../saveData/dataSlice"
 
@@ -11,10 +10,6 @@ type Props = NativeStackScreenProps<RootStackParamList, "Login">
 
 function LoginScreen({ navigation }: Props) {
   const [userID, setUserID] = useState<number | null>(null)
-
-  const loggedInUser = useSelector((state: RootState) => state.uid)
-  console.log("logged in user: ", loggedInUser)
-
   const dispatch = useDispatch()
 
   return (
