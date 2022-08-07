@@ -1,8 +1,11 @@
 {
+  "name": "prototype",
+  "displayName": "prototype",
   "expo": {
     "name": "prototype",
     "slug": "prototype",
     "version": "1.0.0",
+    "sdkVersion": "44.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -13,17 +16,17 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.danielkirkwood.prototype"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "package": "com.danielkirkwood.prototype"
     },
     "web": {
       "favicon": "./assets/favicon.png"
