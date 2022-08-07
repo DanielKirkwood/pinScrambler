@@ -17,7 +17,6 @@ const PinScreen = ({ navigation }: Props) => {
   // data required from store
   const status = useSelector((state: RootState) => state.entryStatus)
   const order = useSelector((state: RootState) => state.order)
-  console.log(order)
 
   const attempts = useSelector((state: RootState) => state.currentAttempts)
   const dispatch = useDispatch()

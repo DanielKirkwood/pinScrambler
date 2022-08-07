@@ -1,6 +1,6 @@
 import type { NativeStackScreenProps } from "@react-navigation/native-stack"
 import React from "react"
-import { Button, StyleSheet, Text, View } from "react-native"
+import { Alert, Button, StyleSheet, Text, View } from "react-native"
 import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "../../redux/store"
 import writeToCSV from "../../util/writeCSV"
@@ -13,6 +13,10 @@ import {
 } from "../saveData/dataSlice"
 
 type Props = NativeStackScreenProps<RootStackParamList, "Unlocked">
+
+const downloadCSV = (success: boolean, message: string) => {
+  return Alert.alert(success ? "Success" : "Error", message)
+}
 
 const UnlockedScreen = ({ navigation }: Props) => {
   const dispatch = useDispatch()
@@ -71,8 +75,10 @@ const UnlockedScreen = ({ navigation }: Props) => {
       <View style={styles.buttonStyle}>
         <Button
           title="Download CSV"
-          onPress={() => {
-            writeToCSV("test", data)
+          onPress={async () => {
+            const response = await writeToCSV("PinScrambler Data", data)
+
+            downloadCSV(response.success, response.payload)
           }}
         />
       </View>

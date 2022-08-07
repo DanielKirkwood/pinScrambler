@@ -29,17 +29,17 @@ async function writeToCSV(filename: string, data: SavedData[]) {
   })
 
   if (Platform.OS === "ios") {
-    const shareResult = await Sharing.shareAsync(fileUri, {
+    await Sharing.shareAsync(fileUri, {
       UTI: "public.text",
     })
+    return { success: true, payload: "Download complete." }
   }
 
   if (Platform.OS === "android") {
     const permissions = await Permissions.askAsync(Permissions.MEDIA_LIBRARY)
 
     if (permissions.status != "granted") {
-      console.log("Permissions not granted")
-      return
+      return { success: false, payload: "Permissions not granted." }
     }
 
     try {
@@ -50,10 +50,13 @@ async function writeToCSV(filename: string, data: SavedData[]) {
       } else {
         await MediaLibrary.addAssetsToAlbumAsync([asset], album, false)
       }
-    } catch (e) {
-      console.log(e)
+      return { success: true, payload: "Download complete." }
+    } catch (error) {
+      return { success: false, payload: error as string }
     }
   }
+
+  return { success: false, payload: "Platform is neither android nor ios" }
 }
 
 export default writeToCSV
