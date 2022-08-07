@@ -23,12 +23,12 @@ const UnlockedScreen = ({ navigation }: Props) => {
 
   const renderButton = () => {
     const isNormal = layout === "normal"
-    const buttonTitle = isNormal ? "random" : "normal"
+    const buttonTitle = isNormal ? "Random" : "Normal"
 
     return (
       <View style={styles.buttonStyle}>
         <Button
-          title={`Set ordering to ${buttonTitle}`}
+          title={`Change Layout To ${buttonTitle}`}
           onPress={() => {
             dispatch(swapLayout())
             navigation.navigate("Locked")
@@ -70,7 +70,7 @@ const UnlockedScreen = ({ navigation }: Props) => {
       {renderButton()}
       <View style={styles.buttonStyle}>
         <Button
-          title="Download csv"
+          title="Download CSV"
           onPress={() => {
             writeToCSV("test", data)
           }}
@@ -90,7 +90,7 @@ const UnlockedScreen = ({ navigation }: Props) => {
         <View style={styles.buttonStyle}>
           <Button
             color="red"
-            title="Log out"
+            title="Log Out"
             onPress={() => {
               dispatch(signUserOut())
             }}

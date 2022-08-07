@@ -73,14 +73,15 @@ export const dataSlice = createSlice({
       // if not matching increase number of attempts
       if (!isMatching) {
         state.currentAttempts += 1
-
-        if (state.layout === "random") {
-          state.order = shuffle(state.order)
-        }
       }
 
       // change the status if is matching
       state.entryStatus = isMatching ? "success" : "error"
+
+      // reshuffle
+      if (state.layout === "random") {
+        state.order = shuffle(state.order)
+      }
     },
     // add to data list using currently signed in user, current pin and the given metrics
     addData: (
@@ -138,6 +139,11 @@ export const dataSlice = createSlice({
       // reset metrics without adding to data
       state.currentAttempts = 0
       state.entryStatus = "ready"
+
+      // reshuffle
+      if (state.layout === "random") {
+        state.order = shuffle(state.order)
+      }
     },
   },
 })
