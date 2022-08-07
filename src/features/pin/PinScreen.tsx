@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react"
 import { Button, StyleSheet, Text, TouchableOpacity, View } from "react-native"
 import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "../../redux/store"
-import { getTimeDiff } from "../../util/time"
 import type { RootStackParamList } from "../navigation/Navigation"
 import {
   addData,
@@ -24,9 +23,8 @@ const PinScreen = ({ navigation }: Props) => {
   // update userPin as user enters it
   const [userPin, setUserPin] = useState<string>("")
 
-  // variables for tracking the entry times of the first and last input
-  let firstTime = new Date()
-  let lastTime = new Date()
+  // store first input button click
+  const [firstTime, setFirstTime] = useState<number>()
 
   useEffect(() => {
     // when user enters pin, set it as currentPin or attempt unlock
@@ -43,17 +41,20 @@ const PinScreen = ({ navigation }: Props) => {
 
     // if it is the users first attempt at entering their pin, save the time
     if (userPin.length === 1 && attempts === 0 && status !== "not set") {
-      firstTime = new Date()
+      setFirstTime(Date.now())
     }
     // if user successfully signs in
     if (status === "success") {
       // measure time between first button click and now
-      lastTime = new Date()
-      let time: number = getTimeDiff(firstTime, lastTime)
+      const lastTime: number = Date.now()
 
-      // add user data to state
-      dispatch(addData({ timeToUnlock: time }))
-      navigation.navigate("Unlocked")
+      if (firstTime != undefined && lastTime != undefined) {
+        let time: number = lastTime - firstTime
+
+        // add user data to state
+        dispatch(addData({ timeToUnlock: time }))
+        navigation.navigate("Unlocked")
+      }
     }
 
     return

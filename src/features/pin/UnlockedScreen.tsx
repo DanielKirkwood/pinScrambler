@@ -5,7 +5,12 @@ import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "../../redux/store"
 import writeToCSV from "../../util/writeCSV"
 import { RootStackParamList } from "../navigation/Navigation"
-import { resetPin, signUserOut, swapLayout } from "../saveData/dataSlice"
+import {
+  clearAllData,
+  resetPin,
+  signUserOut,
+  swapLayout,
+} from "../saveData/dataSlice"
 
 type Props = NativeStackScreenProps<RootStackParamList, "Unlocked">
 
@@ -71,14 +76,26 @@ const UnlockedScreen = ({ navigation }: Props) => {
           }}
         />
       </View>
-      <View style={styles.buttonStyle}>
-        <Button
-          color="red"
-          title="Log out"
-          onPress={() => {
-            dispatch(signUserOut())
-          }}
-        />
+
+      <View style={{ flexDirection: "row" }}>
+        <View style={styles.buttonStyle}>
+          <Button
+            color="red"
+            title="Delete All Data"
+            onPress={() => {
+              dispatch(clearAllData())
+            }}
+          />
+        </View>
+        <View style={styles.buttonStyle}>
+          <Button
+            color="red"
+            title="Log out"
+            onPress={() => {
+              dispatch(signUserOut())
+            }}
+          />
+        </View>
       </View>
     </View>
   )

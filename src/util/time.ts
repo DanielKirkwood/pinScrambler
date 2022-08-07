@@ -1,6 +1,7 @@
-export function getTimeDiff(startDate: Date, endDate: Date) {
-  // if you want seconds then divide by 1000
-  // const msInSecond = 1000
+export function getTimeDiffMs(startDate: Date, endDate: Date) {
+  return endDate.getTime() - startDate.getTime()
+}
 
-  return Math.abs(endDate.getTime() - startDate.getTime())
+export function getTimeDiffSec(startDate: Date, endDate: Date) {
+  return (endDate.getTime() - startDate.getTime()) / 1000
 }
