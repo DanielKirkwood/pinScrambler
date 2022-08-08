@@ -1,8 +1,9 @@
 import type { NativeStackScreenProps } from "@react-navigation/native-stack"
 import { StatusBar } from "expo-status-bar"
 import React, { useState } from "react"
-import { Button, StyleSheet, Text, TextInput, View } from "react-native"
+import { StyleSheet, Text, TextInput, View } from "react-native"
 import { useDispatch } from "react-redux"
+import Button from "../button/Button"
 import { RootStackParamList } from "../navigation/Navigation"
 import { setUser } from "../saveData/dataSlice"
 
@@ -26,15 +27,14 @@ function LoginScreen({ navigation }: Props) {
         />
       </View>
 
-      <View style={styles.loginBtn}>
-        <Button
-          title="LOGIN"
-          onPress={() => {
-            dispatch(setUser(userID))
-          }}
-          color="black"
-        />
-      </View>
+      <Button
+        title="LOGIN"
+        onPress={() => {
+          dispatch(setUser(userID))
+        }}
+        textColor="black"
+        bgColor="transparent"
+      />
     </View>
   )
 }
@@ -61,18 +61,7 @@ const styles = StyleSheet.create({
     padding: 10,
     marginLeft: 20,
   },
-  loginBtn: {
-    width: "80%",
-    borderRadius: 25,
-    height: 50,
-    alignItems: "center",
-    justifyContent: "center",
-    marginTop: 40,
-    backgroundColor: "#fff",
-  },
-  loginText: {
-    color: "black",
-  },
+
   title: {
     color: "#fff",
     fontSize: 24,

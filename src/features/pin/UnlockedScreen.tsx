@@ -1,6 +1,8 @@
 import type { NativeStackScreenProps } from "@react-navigation/native-stack"
 import React from "react"
-import { Alert, Button, StyleSheet, Text, View } from "react-native"
+import { Alert, StyleSheet, Text, View } from "react-native"
+import Button from "../button/Button"
+
 import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "../../redux/store"
 import writeToCSV from "../../util/writeCSV"
@@ -30,15 +32,15 @@ const UnlockedScreen = ({ navigation }: Props) => {
     const buttonTitle = isNormal ? "Random" : "Normal"
 
     return (
-      <View style={styles.buttonStyle}>
-        <Button
-          title={`Change Layout To ${buttonTitle}`}
-          onPress={() => {
-            dispatch(swapLayout())
-            navigation.navigate("Locked")
-          }}
-        />
-      </View>
+      <Button
+        title={`Change Layout To ${buttonTitle}`}
+        onPress={() => {
+          dispatch(swapLayout())
+          navigation.navigate("Locked")
+        }}
+        textColor="blue"
+        bgColor="transparent"
+      />
     )
   }
 
@@ -53,55 +55,56 @@ const UnlockedScreen = ({ navigation }: Props) => {
         {`Unlocked - (uid ${loggedInUser})`}
       </Text>
       <View style={{ flexDirection: "row" }}>
-        <View style={styles.buttonStyle}>
-          <Button
-            title="Lock"
-            onPress={() => {
-              navigation.navigate("Locked")
-            }}
-          />
-        </View>
-        <View style={styles.buttonStyle}>
-          <Button
-            title={currentPin === "" ? "Set PIN" : "Change PIN"}
-            onPress={() => {
-              dispatch(resetPin())
-              navigation.navigate("Locked")
-            }}
-          />
-        </View>
-      </View>
-      {renderButton()}
-      <View style={styles.buttonStyle}>
         <Button
-          title="Download CSV"
-          onPress={async () => {
-            const response = await writeToCSV("PinScrambler_Data", data)
-
-            downloadCSV(response.success, response.payload)
+          title="Lock"
+          onPress={() => {
+            navigation.navigate("Locked")
           }}
+          textColor="blue"
+          bgColor="transparent"
+        />
+
+        <Button
+          title={currentPin === "" ? "Set PIN" : "Change PIN"}
+          onPress={() => {
+            dispatch(resetPin())
+            navigation.navigate("Locked")
+          }}
+          textColor="blue"
+          bgColor="transparent"
         />
       </View>
+      {renderButton()}
+
+      <Button
+        title="Download CSV"
+        onPress={async () => {
+          const response = await writeToCSV("PinScrambler_Data", data)
+
+          downloadCSV(response.success, response.payload)
+        }}
+        textColor="blue"
+        bgColor="transparent"
+      />
 
       <View style={{ flexDirection: "row" }}>
-        <View style={styles.buttonStyle}>
-          <Button
-            color="red"
-            title="Delete All Data"
-            onPress={() => {
-              dispatch(clearAllData())
-            }}
-          />
-        </View>
-        <View style={styles.buttonStyle}>
-          <Button
-            color="red"
-            title="Log Out"
-            onPress={() => {
-              dispatch(signUserOut())
-            }}
-          />
-        </View>
+        <Button
+          title="Delete All Data"
+          onPress={() => {
+            dispatch(clearAllData())
+          }}
+          textColor="red"
+          bgColor="transparent"
+        />
+
+        <Button
+          title="Log Out"
+          onPress={() => {
+            dispatch(signUserOut())
+          }}
+          textColor="red"
+          bgColor="transparent"
+        />
       </View>
     </View>
   )
@@ -113,10 +116,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     padding: 15,
-  },
-  buttonStyle: {
-    marginHorizontal: 20,
-    marginTop: 5,
   },
 })
 
