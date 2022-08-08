@@ -76,7 +76,7 @@ const UnlockedScreen = ({ navigation }: Props) => {
         <Button
           title="Download CSV"
           onPress={async () => {
-            const response = await writeToCSV("PinScrambler Data", data)
+            const response = await writeToCSV("PinScrambler_Data", data)
 
             downloadCSV(response.success, response.payload)
           }}
