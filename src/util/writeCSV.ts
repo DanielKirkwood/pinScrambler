@@ -1,6 +1,5 @@
 import * as FileSystem from "expo-file-system"
-import * as MediaLibrary from "expo-media-library"
-import { StorageAccessFramework } from 'expo-file-system';
+import { StorageAccessFramework } from "expo-file-system"
 import * as Sharing from "expo-sharing"
 import { Platform } from "react-native"
 import type { SavedData } from "../features/saveData/dataSlice"
@@ -35,20 +34,27 @@ async function writeToCSV(filename: string, data: SavedData[]) {
   }
 
   if (Platform.OS === "android") {
-    const permissions = await StorageAccessFramework.requestDirectoryPermissionsAsync();
+    const permissions =
+      await StorageAccessFramework.requestDirectoryPermissionsAsync()
 
     if (!permissions.granted) {
       return { success: false, payload: "Permissions not granted." }
     }
 
     try {
-      await StorageAccessFramework.createFileAsync(permissions.directoryUri, fullFilename, 'text/comma-separated-values')
-              .then(async(uri) => {
-                  await FileSystem.writeAsStringAsync(uri, csvString, { encoding: FileSystem.EncodingType.Base64 });
-              })
-              .catch((e) => {
-                  console.log(e);
-              });
+      await StorageAccessFramework.createFileAsync(
+        permissions.directoryUri,
+        fullFilename,
+        "text/comma-separated-values",
+      )
+        .then(async (uri) => {
+          await FileSystem.writeAsStringAsync(uri, csvString, {
+            encoding: FileSystem.EncodingType.Base64,
+          })
+        })
+        .catch((e) => {
+          console.log(e)
+        })
       return { success: true, payload: "Download complete." }
     } catch (error) {
       console.log(error)
