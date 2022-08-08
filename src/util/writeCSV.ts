@@ -28,7 +28,7 @@ async function writeToCSV(filename: string, data: SavedData[]) {
       encoding: FileSystem.EncodingType.UTF8,
     })
     await Sharing.shareAsync(fileUri, {
-      UTI: "public.text",
+      UTI: "public.comma-separated-values-text",
     })
     return { success: true, payload: "Download complete." }
   }
@@ -42,23 +42,20 @@ async function writeToCSV(filename: string, data: SavedData[]) {
     }
 
     try {
-      await StorageAccessFramework.createFileAsync(
+      const newFileUri = await StorageAccessFramework.createFileAsync(
         permissions.directoryUri,
         fullFilename,
-        "text/comma-separated-values",
+        "text/csv",
       )
-        .then(async (uri) => {
-          await FileSystem.writeAsStringAsync(uri, csvString, {
-            encoding: FileSystem.EncodingType.Base64,
-          })
-        })
-        .catch((e) => {
-          console.log(e)
-        })
+
+      await FileSystem.writeAsStringAsync(fileUri, csvString, {
+        encoding: FileSystem.EncodingType.UTF8,
+      })
+
       return { success: true, payload: "Download complete." }
     } catch (error) {
       console.log(error)
-      return { success: false, payload: "An unknown error occured. " }
+      return { success: false, payload: "An unknown error occurred. " }
     }
   }
 
