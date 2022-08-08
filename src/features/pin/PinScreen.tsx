@@ -1,8 +1,9 @@
 import type { NativeStackScreenProps } from "@react-navigation/native-stack"
 import React, { useEffect, useState } from "react"
-import { Button, StyleSheet, Text, TouchableOpacity, View } from "react-native"
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native"
 import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "../../redux/store"
+import Button from "../button/Button"
 import type { RootStackParamList } from "../navigation/Navigation"
 import {
   addData,
@@ -176,7 +177,8 @@ const PinScreen = ({ navigation }: Props) => {
               dispatch(adminUnlock())
               navigation.navigate("Unlocked")
             }}
-            color="white"
+            textColor="white"
+            bgColor="transparent"
           />
         </View>
 
@@ -193,7 +195,8 @@ const PinScreen = ({ navigation }: Props) => {
           <Button
             title="Delete"
             onPress={() => setUserPin(userPin.substring(0, userPin.length - 1))}
-            color="white"
+            textColor="white"
+            bgColor="transparent"
           />
         </View>
       </View>

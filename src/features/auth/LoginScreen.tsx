@@ -1,8 +1,9 @@
 import type { NativeStackScreenProps } from "@react-navigation/native-stack"
 import { StatusBar } from "expo-status-bar"
 import React, { useState } from "react"
-import { Button, StyleSheet, Text, TextInput, View } from "react-native"
+import { StyleSheet, TextInput, View } from "react-native"
 import { useDispatch } from "react-redux"
+import Button from "../button/Button"
 import { RootStackParamList } from "../navigation/Navigation"
 import { setUser } from "../saveData/dataSlice"
 
@@ -15,26 +16,24 @@ function LoginScreen({ navigation }: Props) {
   return (
     <View style={styles.container}>
       <StatusBar style="auto" />
-      <Text style={styles.title}>Log in</Text>
       <View style={styles.inputView}>
         <TextInput
+          autoFocus={true}
           keyboardType="numeric"
           style={styles.TextInput}
-          placeholder="user ID"
-          placeholderTextColor="#003f5c"
+          placeholder="Type user ID here"
           onChangeText={(uid) => setUserID(Number(uid))}
         />
       </View>
 
-      <View style={styles.loginBtn}>
-        <Button
-          title="LOGIN"
-          onPress={() => {
-            dispatch(setUser(userID))
-          }}
-          color="black"
-        />
-      </View>
+      <Button
+        title="Click to login"
+        onPress={() => {
+          dispatch(setUser(userID))
+        }}
+        textColor="black"
+        bgColor="white"
+      />
     </View>
   )
 }
@@ -51,7 +50,7 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     width: "70%",
     height: 45,
-    marginBottom: 20,
+    marginBottom: 50,
 
     alignItems: "center",
   },
@@ -60,23 +59,6 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 10,
     marginLeft: 20,
-  },
-  loginBtn: {
-    width: "80%",
-    borderRadius: 25,
-    height: 50,
-    alignItems: "center",
-    justifyContent: "center",
-    marginTop: 40,
-    backgroundColor: "#fff",
-  },
-  loginText: {
-    color: "black",
-  },
-  title: {
-    color: "#fff",
-    fontSize: 24,
-    paddingBottom: 20,
   },
 })
 

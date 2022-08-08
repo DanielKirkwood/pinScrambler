@@ -1,6 +1,5 @@
 import * as FileSystem from "expo-file-system"
-import * as MediaLibrary from "expo-media-library"
-import * as Permissions from "expo-permissions"
+import { StorageAccessFramework } from "expo-file-system"
 import * as Sharing from "expo-sharing"
 import { Platform } from "react-native"
 import type { SavedData } from "../features/saveData/dataSlice"
@@ -21,14 +20,13 @@ async function writeToCSV(filename: string, data: SavedData[]) {
     .map((e) => e.join(","))
     .join("\n")
 
-  const fileExtension = ".csv"
-  const fileUri: string = `${FileSystem.documentDirectory}${filename}${fileExtension}`
-
-  await FileSystem.writeAsStringAsync(fileUri, csvString, {
-    encoding: FileSystem.EncodingType.UTF8,
-  })
+  const fullFilename = `${filename}.csv`
+  const fileUri: string = `${FileSystem.documentDirectory}${fullFilename}`
 
   if (Platform.OS === "ios") {
+    await FileSystem.writeAsStringAsync(fileUri, csvString, {
+      encoding: FileSystem.EncodingType.UTF8,
+    })
     await Sharing.shareAsync(fileUri, {
       UTI: "public.text",
     })
@@ -36,23 +34,31 @@ async function writeToCSV(filename: string, data: SavedData[]) {
   }
 
   if (Platform.OS === "android") {
-    const permissions = await Permissions.askAsync(Permissions.MEDIA_LIBRARY)
+    const permissions =
+      await StorageAccessFramework.requestDirectoryPermissionsAsync()
 
-    if (permissions.status != "granted") {
+    if (!permissions.granted) {
       return { success: false, payload: "Permissions not granted." }
     }
 
     try {
-      const asset = await MediaLibrary.createAssetAsync(fileUri)
-      const album = await MediaLibrary.getAlbumAsync("Download")
-      if (album == null) {
-        await MediaLibrary.createAlbumAsync("Download", asset, false)
-      } else {
-        await MediaLibrary.addAssetsToAlbumAsync([asset], album, false)
-      }
+      await StorageAccessFramework.createFileAsync(
+        permissions.directoryUri,
+        fullFilename,
+        "text/comma-separated-values",
+      )
+        .then(async (uri) => {
+          await FileSystem.writeAsStringAsync(uri, csvString, {
+            encoding: FileSystem.EncodingType.Base64,
+          })
+        })
+        .catch((e) => {
+          console.log(e)
+        })
       return { success: true, payload: "Download complete." }
     } catch (error) {
-      return { success: false, payload: error as string }
+      console.log(error)
+      return { success: false, payload: "An unknown error occured. " }
     }
   }
 
